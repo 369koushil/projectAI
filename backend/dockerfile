@@ -1,0 +1,23 @@
+# Step 1: Use a lightweight Node.js base image
+FROM node:18-alpine
+
+# Step 2: Set the working directory inside the container
+WORKDIR /app
+
+# Step 3: Copy package.json and package-lock.json to the container
+COPY package.json package-lock.json ./
+
+# Step 4: Install production dependencies
+RUN npm install --production
+
+# Step 5: Copy the rest of the application code to the container
+COPY . .
+
+# Step 6: Expose the port your application will run on
+EXPOSE 3444
+
+# Step 7: Define the environment variables (default values can be overridden)
+ENV PORT=3444
+
+# Step 8: Specify the command to run your application
+CMD ["node", "server.js"]
