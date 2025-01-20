@@ -68,8 +68,11 @@ export const loginController = async (req, res) => {
 
 export const profileController = async (req, res) => {
 
+
+    console.log(req.user)
+    const user=await userService.profileService(req.user.email);
     res.status(200).json({
-        user: req.user
+        user
     });
 
 }
@@ -113,3 +116,19 @@ export const getAllUsersController = async (req, res) => {
 
     }
 }
+
+
+export const  updateProfile=async(req,res)=>{
+    console.log("updating")
+    const updatedUser=await userService.updateProfile(req.body,req.user.email)
+    console.log(updatedUser)
+    if(updatedUser){
+        res.status(200).json({updatedUser})
+    }
+    else{
+        res.status(400)
+    }
+   
+}
+
+

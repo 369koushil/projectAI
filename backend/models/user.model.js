@@ -16,6 +16,31 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         select: false,
+    },
+    username:{
+        type:String,
+        required:true,
+        lowercase:true,
+        minLength:[4,'username must be atleast 4 chars'],
+        maxLength:[10,'username must be atmost length 10']
+    },
+    socialProfiles:{
+        linkedIn:{
+            type:String
+        },
+        twitter:{
+            type:String
+        },
+        reddit:{
+            type:String
+        }
+        
+    },
+    bio:{
+        type:String
+    },
+    profileUrl:{
+        type:String
     }
 })
 

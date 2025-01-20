@@ -1,22 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { UserContext } from '../context/user.context'
 
 const UserAuth = ({ children }) => {
 
-    const { user } = useContext(UserContext)
     const [ loading, setLoading ] = useState(true)
     const token = localStorage.getItem('token')
+    const userData=JSON.parse(localStorage.getItem('user'));
     const navigate = useNavigate()
 
 
 
 
     useEffect(() => {
-        // if (user) {
-        //     setLoading(false)
-        // }
-
+        if (userData) {
+            setLoading(false)
+        }
+    
         if (!token) {
             navigate('/login')
         }
@@ -25,9 +24,9 @@ const UserAuth = ({ children }) => {
             navigate('/')
         }
 
-        // if (!user) {
-        //     navigate('/login')
-        // }
+        if (!userData) {
+            navigate('/login')
+        }
 
     }, [])
 

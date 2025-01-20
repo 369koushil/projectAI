@@ -1,8 +1,10 @@
 import projectModel from '../models/project.model.js';
 import mongoose from 'mongoose';
+import userModel from '../models/user.model.js';
+
 
 export const createProject = async ({
-    name, userId
+    name, description, visibility, userId
 }) => {
     if (!name) {
         throw new Error('Name is required')
@@ -15,7 +17,11 @@ export const createProject = async ({
     try {
         project = await projectModel.create({
             name,
-            users: [ userId ]
+            description,
+            visibility,
+            users: [userId],
+            admins: [userId],
+            creator:userId
         });
     } catch (error) {
         if (error.code === 11000) {
@@ -135,4 +141,136 @@ export const updateFileTree = async ({ projectId, fileTree }) => {
     })
 
     return project;
+}
+
+
+
+
+export const addUserById = async (user, userId) => {
+    // console.log(userId+"++++")
+    // console.log("userid")
+
+    const userarr = await userModel.find({
+        $or: [
+            {
+                username: {
+                    $regex: user,
+                }
+            }
+        ]
+    })
+
+    const userModif = userarr.filter(u => {
+        if (u.email != userId) {
+            return {
+                email: u.username,
+                id: u._id,
+            }
+        }
+    })
+
+    return userModif;
+
+}
+
+
+
+export const getPublicProjects = async () => {
+    try {
+        const res = await projectModel.find({
+            visibility: 'public'
+
+        })
+
+        return res;
+    } catch (err) {
+        console.log(err)
+        throw err;
+    }
+}
+
+export const editProject = async (pId, pName, pDescription, pVisibility, userId) => {
+    try {
+        const find = await projectModel.findOne({
+            _id: pId,
+            admins: userId
+        })
+        const editedInfo = await projectModel.findOneAndUpdate(
+            { _id: pId },
+            {
+                name: pName,
+                description: pDescription,
+                visibility: pVisibility,
+            },
+            { new: true }
+        );
+
+        if (!editedInfo) {
+            throw new Error('Project not found or update failed');
+        }
+
+        return editedInfo;
+    } catch (error) {
+        console.error('Error updating project:', error.message);
+        throw error;
+    }
+};
+
+
+export const deleteProject = async (pId, userId) => {
+
+    try {
+        const find = await projectModel.findOne({
+            _id: pId,
+            admins: userId
+        })
+        if (!find) {
+            throw new Error("user did not have permision to delete this")
+        }
+        const res = await projectModel.findOneAndDelete({
+            _id: pId
+        })
+        if (!res) {
+            throw new Error('erro while delteing try again')
+        }
+        return res;
+    } catch (err) {
+        throw err;
+    }
+}
+
+
+
+
+
+
+export const makeNewAdmin = async (users, projectId, userId) => {
+    try {
+        const isAdmin = await projectModel.findOne({
+            admins: userId
+        })
+
+        if (!isAdmin) throw new Error("user should be an admin to make new admin")
+        const newAdmins = await projectModel.findOneAndUpdate({
+            _id: projectId
+        },
+            {
+                $addToSet: {
+                    admins: {
+                        $each: users
+                    },
+                    users:{
+                        $each:users
+                    }
+                }
+            }, {
+            new: true
+        }
+        )
+
+        return newAdmins;
+
+    } catch (err) {
+        throw err;
+    }
 }

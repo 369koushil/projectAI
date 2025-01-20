@@ -7,6 +7,7 @@ const Register = () => {
 
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
+    const [username,setUsername]=useState('')
 
     const { user,setUser } = useContext(UserContext)
 
@@ -18,6 +19,7 @@ const Register = () => {
         e.preventDefault()
 
         axios.post('/users/register', {
+            username,
             email,
             password
         }).then((res) => {
@@ -25,7 +27,7 @@ const Register = () => {
             console.log(res.data)
             localStorage.setItem('token', res.data.token)
             localStorage.setItem('user',JSON.stringify(res.data.user))
-            // setUser(res.data.user)
+            setUser(res.data.user)
             
             navigate('/')
         }).catch((err) => {
@@ -53,6 +55,16 @@ const Register = () => {
                             id="email"
                             className="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter your email"
+                        />
+                    </div>
+                    <div className="mb-6">
+                    <label htmlFor="username">Username</label>
+                    <input
+                            onChange={(e) => setUsername(e.target.value)} s
+                            type="password"
+                            id="password"
+                            className="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Enter your password"
                         />
                     </div>
                     <div className="mb-6">

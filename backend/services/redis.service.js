@@ -1,10 +1,11 @@
 import Redis from 'ioredis';
 
 
+
 const redisClient = new Redis({
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT,
-    password: process.env.REDIS_PASSWORD
+    host: 'redis-19655.crce179.ap-south-1-1.ec2.redns.redis-cloud.com',
+    port: '19655',
+    password: 'chtxWtbhj60q2q0s7oEyKtPJm4MWyszp'
 });
 
 

@@ -20,6 +20,24 @@ const projectSchema = new mongoose.Schema({
         type: Object,
         default: {}
     },
+    description:{
+        type:String,
+        required:true
+    },
+    visibility:{
+        type:String,
+        default:"private"
+    },
+    admins:[
+        {
+            type:mongoose.Schema.ObjectId,
+            ref:'user'
+        }
+    ],
+    creator:{
+        type:mongoose.Schema.ObjectId,
+        ref:'user'
+    }
 
 })
 
