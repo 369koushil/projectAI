@@ -9,6 +9,7 @@ import UserProfile from '../screens/UserProfile'
 import FileUpload from '../screens/FileUpload'
 import FileuploadImagekit from '../../upload/FileuploadImagekit'
 import ProjectDisplay from '../components/ProjectDisplay'
+import PublicProjectsPage from '../screens/PublicProjectsPage'
 
 const AppRoutes = () => {
     return (
@@ -22,6 +23,7 @@ const AppRoutes = () => {
                 <Route path='/upload' element={<FileuploadImagekit/>}/>
                 <Route path="/project" element={<UserAuth><Project /></UserAuth>} />
                 <Route path='/box' element={<ProjectDisplay></ProjectDisplay>}/>
+                <Route path='/public-projects' element={<PublicProjectsPage/>}/>
             </Routes>
 
         </BrowserRouter>

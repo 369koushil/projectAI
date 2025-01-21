@@ -37,7 +37,7 @@ export const profileService = async (email) => {
 
   if (user) {
       user.socialProfiles = {
-          linkedIn: user.socialProfiles?.linkedIn || "https://www.linkedin.com/in/your-profile",
+          linkedin: user.socialProfiles?.linkedin || "https://www.linkedin.com/in/your-profile",
           twitter: user.socialProfiles?.twitter || "https://twitter.com/your-handle",
           reddit: user.socialProfiles?.reddit || "https://reddit.com/user/your-profile",
       };

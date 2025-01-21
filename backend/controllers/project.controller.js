@@ -220,3 +220,29 @@ export const getUserProjects=async(req,res)=>{
         res.status(400).json({err:err.message})
     }
 }
+
+
+
+export const getProjectByName=async(req,res)=>{
+    try{
+        const name=req.params.projectname;
+         const searchArr=await projectService.getProjectByName(name);
+         res.status(200).json(searchArr)
+    }catch(err){
+        return res.status(400).json(err)
+    }
+}
+
+
+
+export const fetchPublicProjects=async(req,res)=>{
+    try{
+   const page=req.params.page
+   const searchres=await projectService.fetchPublicProjects(page);
+   
+   res.status(200).json(searchres);
+    }catch(err){
+        console.log(err)
+        res.status(400).json(err.message)
+    }
+}

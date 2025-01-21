@@ -45,5 +45,7 @@ router.put('/edit-project',authMiddleWare.authUser,projectController.editProject
 router.delete('/delete-project',authMiddleWare.authUser,projectController.deleteProject);
 router.put('/make-admins',authMiddleWare.authUser,projectController.makeNewAdmin);
 router.get('/getuserprojects',authMiddleWare.authUser,projectController.getUserProjects)
+router.get('/get-project-name/:projectname',authMiddleWare.authUser,projectController.getProjectByName);
+router.get('/get-public-projects/:page',authMiddleWare.authUser,projectController.fetchPublicProjects);
 export default router;
 

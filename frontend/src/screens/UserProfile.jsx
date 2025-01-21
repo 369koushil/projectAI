@@ -12,7 +12,7 @@ const UserProfile = () => {
     username: "",
     bio: "",
     socialProfiles: {
-      linkedIn: "www",
+      linkedin: "www",
       twitter: "www",
       reddit: "www",
     },
@@ -23,11 +23,19 @@ const UserProfile = () => {
   const [projects,setProjects]=useState([]);
 
   useEffect(() => {
-    axiosInstance.get("users/profile").then((res) => {
+    axiosInstance.get("users/profile",{
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
+    }).then((res) => {
       setUser(res.data.user);
-    });
+    },[]);
 
-    axiosInstance.get('/projects/getuserprojects').then(res=>{
+    axiosInstance.get('/projects/getuserprojects',{
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
+    }).then(res=>{
       setProjects(res.data.userProjects)
       console.log(res.data)
     }).finally(err=>{
@@ -37,10 +45,16 @@ const UserProfile = () => {
 
   const handleSave = () => {
     try {
-      axiosInstance.put("/users/update-profile", user).then((res) => {
+      axiosInstance.put("/users/update-profile", user,{
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+      }
+      }).then((res) => {
         console.log(res.data);
+        localStorage.setItem('user',JSON.stringify(res.data.updatedUser))
       });
       setIsEditing(false);
+      
     } catch (error) {
       console.error("Error updating profile:", error);
       alert("Failed to save changes. Please try again.");
@@ -52,7 +66,11 @@ const UserProfile = () => {
        <div onClick={()=>navigate('/')} className="fixed text-white top-2 left-4   cursor-pointer  h-12 w-12 rounded-full bg-darkblue flex items-center justify-center  "><i className="  ri-arrow-left-fill"></i></div>
       <div className="fixed top-2 right-8 text-white   cursor-pointer  h-12 w-12 rounded-full bg-darkblue flex items-center justify-center "><i onClick={()=>{
           navigate('/login');
-          axiosInstance.get('/users/logout').then(res=>console.log(res.data)).finally(err=>console.log(err))
+          axiosInstance.get('/users/logout',{
+            headers: {
+              "Authorization": `Bearer ${localStorage.getItem('token')}`
+          }
+          }).then(res=>console.log(res.data)).finally(err=>console.log(err))
           localStorage.removeItem('token')
           localStorage.removeItem('user')
 
@@ -93,7 +111,8 @@ const UserProfile = () => {
             <h1 className="text-3xl  text-white">
               {"@"+user.username || "Anonymous"}
             </h1>
-            <p className="text-gray-300 text-left mt-3 px-4 max-w-2xl">
+            <p className="text-gray-300  mt-3 px-4 max-w-2xl">
+              <p className="text-xl">Bio</p>
               {user.bio || "No bio available"}
             </p>
           </div>
@@ -108,7 +127,7 @@ const UserProfile = () => {
 
 
            </div>
-          {["linkedIn", "twitter", "reddit"].map((platform) => (
+          {["linkedin", "twitter", "reddit"].map((platform) => (
             <input
               key={platform}
               type="url"
@@ -137,7 +156,7 @@ const UserProfile = () => {
               url && (
                 <p key={platform}>
                   <span className="font-bold text-white">
-                    {platform.charAt(0).toUpperCase() + platform.slice(1)}:
+                    {<i className={` text-2xl text-white ri-${platform}-line`}></i>}:
                   </span>{" "}
                   <a
                     href={url}

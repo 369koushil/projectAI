@@ -76,6 +76,10 @@ const Project = () => {
       .put("/projects/add-user", {
         projectId: location.state.project._id,
         users: Array.from(selectedUserId),
+      },{
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+      }
       })
       .then((res) => {
         console.log(res.data);
@@ -144,7 +148,11 @@ const Project = () => {
     });
 
     axios
-      .get(`/projects/get-project/${location.state.project._id}`)
+      .get(`/projects/get-project/${location.state.project._id}`,{
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+      }
+      })
       .then((res) => {
         console.log(res.data.project);
 
@@ -153,7 +161,11 @@ const Project = () => {
       });
 
     axios
-      .get("/users/all")
+      .get("/users/all",{
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+      }
+      })
       .then((res) => {
         setUsers(res.data.users);
       })
@@ -167,6 +179,10 @@ const Project = () => {
       .put("/projects/update-file-tree", {
         projectId: project._id,
         fileTree: ft,
+      },{
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+      }
       })
       .then((res) => {
         console.log(res.data);
@@ -176,7 +192,11 @@ const Project = () => {
       });
   }
   const handleSearch = (e) => {
-    axios.get(`/projects/getby-username?filter=${e}`).then((res) => {
+    axios.get(`/projects/getby-username?filter=${e}`,{
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
+    }).then((res) => {
       setUserArr(res.data.selectuser);
       console.log(res.data);
     });

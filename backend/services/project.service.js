@@ -274,3 +274,56 @@ export const makeNewAdmin = async (users, projectId, userId) => {
         throw err;
     }
 }
+
+export const getProjectByName = async (name) => {
+    if (!name || typeof name !== 'string') {
+        throw new Error("Invalid search name");
+    }
+
+    try {
+        const searchArr = await projectModel.find({
+            visibility:'public',
+            name: { $regex: name, $options: 'i' }, 
+        });
+
+        return searchArr;
+    } catch (err) {
+        console.error("Error fetching projects by name:", err.message);
+        throw new Error("Failed to search for projects");
+    }
+};
+
+
+
+export const fetchPublicProjects = async (page , limit = 10) => {
+    try {
+     
+      const skip = (page - 1) * limit;
+  
+    
+      const projects = await projectModel.find({ visibility: 'public' })
+        .sort({ createdAt: -1 }) 
+        .skip(skip)
+        .limit(limit);
+
+        console.log(projects)
+  
+      
+      const totalProjects = await projectModel.countDocuments({ visibility: 'public' });
+      
+  
+     console.log(totalProjects)
+      const totalPages = Math.ceil(totalProjects / limit);
+  
+   
+      return {
+        projects,
+        totalPages,
+        currentPage: page,
+      };
+    } catch (error) {
+      console.error('Error fetching public projects:', error);
+      throw new Error('Failed to fetch public projects');
+    }
+  };
+  

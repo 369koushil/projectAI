@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
         maxLength:[10,'username must be atmost length 10']
     },
     socialProfiles:{
-        linkedIn:{
+        linkedin:{
             type:String
         },
         twitter:{

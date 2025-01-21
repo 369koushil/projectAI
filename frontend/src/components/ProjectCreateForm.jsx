@@ -13,10 +13,15 @@ const ProjectCreateForm = (props) => {
                 name:projectName,
                 description:projectBio,
                 visibility:projectVisibility
+            },{
+              headers: {
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
             }).then(res=>{
                 console.log(res.data)
             }).finally(err=>console.log(err))
             props.setIsModalOpen(false)
+            props.onProjectCreated(res.data.project); 
         }
 
   return (

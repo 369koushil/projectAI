@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Link, useFetcher, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/user.context'
-import axios from '../config/axios'
+import axios from "axios"
 
 const Register = () => {
 
@@ -18,7 +18,7 @@ const Register = () => {
 
         e.preventDefault()
 
-        axios.post('/users/register', {
+        axios.post(`${import.meta.env.VITE_API_URL}/users/register`, {
             username,
             email,
             password

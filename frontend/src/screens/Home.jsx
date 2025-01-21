@@ -12,11 +12,38 @@ const Home = () => {
 
   const navigate = useNavigate();
 
+  const handleProjectCreated = (newProject) => {
+   
+    axios
+    .get(`${import.meta.env.VITE_API_URL}/projects/all`,
+     {
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
+     }
+    )
+    .then((res) => {
+      console.log(res.data);
+      setProject(res.data.projects);
+      console.log(user);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+
+
   useEffect(() => {
     console.log(localStorage.getItem("token"));
     console.log(user);
     axios
-      .get("/projects/all")
+      .get(`${import.meta.env.VITE_API_URL}/projects/all`,
+       {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+      }
+       }
+      )
       .then((res) => {
         console.log(res.data);
         setProject(res.data.projects);
@@ -25,14 +52,18 @@ const Home = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  },[]);
 
   useEffect(() => {
-    axios.get("/users/profile").then((res) => {
-      console.log(res.data);
-      setUser(res.data);
-      console.log(user);
-    });
+    axios.get(`${import.meta.env.VITE_API_URL}/users/profile`,{
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+    }
+    }).then((res) => {
+        console.log(res.data);
+        setUser(res.data);
+        console.log(user);
+      });
   }, []);
 
   return (
@@ -42,10 +73,8 @@ const Home = () => {
           <img className=" h-20 " src={photo} alt="logo" />
         </div>
         <div className="flex gap-4 text-gray-800 h-full   text-lg justify-end grow ">
-          <div className="font-mono flex items-center  w-24 border-red-400">
-            Home
-          </div>
-          <div className="font-mono flex items-center w-24">
+         
+          <div onClick={()=>navigate('/public-projects')} className="font-mono cursor-pointer hover:text-orange flex items-center w-24">
             Public Projects
           </div>
           <div
@@ -58,11 +87,11 @@ const Home = () => {
           </div>
         </div>
       </header>
-      <div className="p-4 pt-12 gap-y-16 h-full projects grow bg-primary flex flex-wrap flex-row">
+      <div className="p-4 pt-12 gap-y-16 h-full projects grow bg-primary flex flex-wrap flex-col">
         <div>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-yellow project p-4 border h-40 w-44 text-black hover:bg-orange border-slate-300 rounded-md"
+            className="bg-yellow project p-4 text-lg font-mono border h-40 w-44 text-black hover:bg-orange border-slate-300 rounded-md"
           >
             New Project
             <i className="ri-link ml-2"></i>
@@ -78,26 +107,26 @@ const Home = () => {
                     state: { project }
                 });
             }}
-            className="project flex-wrap flex flex-col h-52 w-72 gap-2 cursor-pointer p-4 border border-gray-300 rounded-md max-w-52 
+            className="project flex-wrap justify-start gap-y-8 flex flex-col h-52 w-72 gap-2 cursor-pointer p-4 border border-gray-300 rounded-md max-w-52 
                        transition-transform transform hover:scale-105 hover:shadow-[12px_12px_0px_0px_rgba(255,215,0,0.8)] 
                        hover:z-10 hover:bg-darkblue"
           >
-            <h2 className="font-semibold font-mono text-lg">
+            <p className="font-semibold font-mono text-2xl">
               {project.name}
-            </h2>
+            </p>
           
             <div className="flex gap-2">
               <p>
-                <small> <i className="ri-user-line"></i> Collaborators</small> :
+                <small className="text-xl"> <i className="ri-user-line"></i> Collaborators</small> :
               </p>
-              {project.users.length}
+              <p className="text-xl">{project.users.length}</p>
             </div>
           </div>
           
           ))}
         </div>
       </div>
-      {isModalOpen && <ProjectCreateForm setIsModalOpen={setIsModalOpen} />}
+      {isModalOpen && <ProjectCreateForm  onProjectCreated={handleProjectCreated} setIsModalOpen={setIsModalOpen} />}
     </main>
   );
 };

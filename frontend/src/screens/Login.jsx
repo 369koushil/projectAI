@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import axios from '../config/axios'
 import { UserContext } from '../context/user.context'
+import axiosInstance from '../config/axios'
+import { useNavigate,Link } from 'react-router-dom'
 
 const Login = () => {
 
@@ -17,7 +17,7 @@ const Login = () => {
 
         e.preventDefault()
 
-        axios.post('/users/login', {
+        axiosInstance.post(`${import.meta.env.VITE_API_URL}/users/login`, {
             email,
             password
         }).then((res) => {
