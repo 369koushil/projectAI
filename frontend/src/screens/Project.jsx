@@ -30,7 +30,7 @@ const Project = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const location = useLocation();
-
+  const navigate = useNavigate();
   const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(new Set()); // Initialized as Set
@@ -73,15 +73,20 @@ const Project = () => {
   function addCollaborators() {
     console.log(Array.from(selectedUserId));
     axios
-      .put("/projects/add-user", {
-        projectId: location.state.project._id,
-        users: Array.from(selectedUserId),
-      },{
-        headers: {
-          "Authorization": `Bearer ${localStorage.getItem('token')}`
-      }
-      })
+      .put(
+        "/projects/add-user",
+        {
+          projectId: location.state.project._id,
+          users: Array.from(selectedUserId),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then((res) => {
+        setSelectedUserId(new Set())
         console.log(res.data);
         setIsModalOpen(false);
       })
@@ -148,10 +153,10 @@ const Project = () => {
     });
 
     axios
-      .get(`/projects/get-project/${location.state.project._id}`,{
+      .get(`/projects/get-project/${location.state.project._id}`, {
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem('token')}`
-      }
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       })
       .then((res) => {
         console.log(res.data.project);
@@ -161,10 +166,10 @@ const Project = () => {
       });
 
     axios
-      .get("/users/all",{
+      .get("/users/all", {
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem('token')}`
-      }
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       })
       .then((res) => {
         setUsers(res.data.users);
@@ -176,14 +181,18 @@ const Project = () => {
 
   function saveFileTree(ft) {
     axios
-      .put("/projects/update-file-tree", {
-        projectId: project._id,
-        fileTree: ft,
-      },{
-        headers: {
-          "Authorization": `Bearer ${localStorage.getItem('token')}`
-      }
-      })
+      .put(
+        "/projects/update-file-tree",
+        {
+          projectId: project._id,
+          fileTree: ft,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then((res) => {
         console.log(res.data);
       })
@@ -192,14 +201,16 @@ const Project = () => {
       });
   }
   const handleSearch = (e) => {
-    axios.get(`/projects/getby-username?filter=${e}`,{
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem('token')}`
-    }
-    }).then((res) => {
-      setUserArr(res.data.selectuser);
-      console.log(res.data);
-    });
+    axios
+      .get(`/projects/getby-username?filter=${e}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        setUserArr(res.data.selectuser);
+        console.log(res.data);
+      });
   };
 
   // Removed appendIncomingMessage and appendOutgoingMessage functions
@@ -211,22 +222,31 @@ const Project = () => {
   return (
     <main className="h-screen w-screen flex">
       <section className="left relative flex flex-col h-screen min-w-96 bg-slate-300">
-        <header className="flex justify-between items-center p-2 px-4 w-full bg-slate-100 absolute z-10 top-0">
-          <button className="flex gap-2" onClick={() => setIsModalOpen(true)}>
-            <i className="ri-add-fill mr-1"></i>
-            <p>Add collaborator</p>
+        <header
+          className={`flex justify-between items-center p-2 px-4 w-full ${
+            isSidePanelOpen ? "bg-outer" : "bg-inner"
+          } absolute z-10 top-0`}
+        >
+          <button className="flex gap-2  " onClick={() => setIsModalOpen(true)}>
+            <i className="text-xl text-white  ri-add-fill mr-1"></i>
+            <p className="text-xl text-white font-mono ">Add collaborator</p>
           </button>
-          <button
-            onClick={() => setIsSidePanelOpen(!isSidePanelOpen)}
-            className="p-2"
-          >
-            <i className="ri-group-fill"></i>
-          </button>
+          <div className=" flex justify-end gap-4 text-xl">
+            <button onClick={() => navigate("/")}>
+              <i className=" text-xl text-white hover:text-yellow ri-home-2-line"></i>
+            </button>
+            <button
+              onClick={() => setIsSidePanelOpen(!isSidePanelOpen)}
+              className="p-2"
+            >
+              <i className=" text- text-white hover:text-yellow ri-group-line"></i>
+            </button>
+          </div>
         </header>
-        <div className="conversation-area pt-14 pb-10 flex-grow flex flex-col h-full relative">
+        <div className="conversation-area bg-outer pt-14 pb-10 flex-grow flex flex-col h-full relative">
           <div
             ref={messageBox}
-            className="message-box p-1 flex-grow flex flex-col gap-1 overflow-auto max-h-full scrollbar-hide"
+            className="message-box p-1 flex-grow flex flex-col font-mono pt-4 pr-2 gap-1 overflow-auto max-h-full scrollbar-hide"
           >
             {messages.map((msg, index) => (
               <div
@@ -263,7 +283,7 @@ const Project = () => {
           </div>
         </div>
         <div
-          className={`sidePanel w-full h-full flex flex-col gap-2 bg-slate-50 absolute transition-all ${
+          className={`sidePanel bg-inner  text-white font-mono w-full h-full flex flex-col gap-2 absolute transition-all ${
             isSidePanelOpen ? "translate-x-0" : "-translate-x-full"
           } top-0`}
         >
@@ -284,7 +304,7 @@ const Project = () => {
             {project.users &&
               project.users.map((user) => {
                 return (
-                  <div className="user cursor-pointer hover:bg-slate-200 p-2 flex gap-2 items-center">
+                  <div className="user cursor-pointer hover:bg-primary p-2 flex gap-2 items-center">
                     <div className="aspect-square rounded-full w-fit h-fit flex items-center justify-center p-5 text-white bg-slate-600">
                       <i className="ri-user-fill absolute"></i>
                     </div>
@@ -297,8 +317,8 @@ const Project = () => {
       </section>
 
       <section className="right  bg-red-50 flex-grow h-full flex">
-        <div className="explorer h-full max-w-64 min-w-52 bg-slate-200">
-          <div className="file-tree w-full">
+        <div className="explorer h-full max-w-64 min-w-36  bg-slate-200 flex flex-col justify-between ">
+          <div className="file-tree w-full flex flex-col ">
             {Object.keys(fileTree).map((file, index) => (
               <button
                 key={index}
@@ -311,7 +331,69 @@ const Project = () => {
                 <p className="font-semibold text-lg">{file}</p>
               </button>
             ))}
-           
+          </div>
+
+          <div className="actions flex flex-col ">
+            <button
+              onClick={async () => {
+                await webContainer.mount(fileTree);
+
+                const installProcess = await webContainer.spawn("npm", [
+                  "install",
+                ]);
+
+                installProcess.output.pipeTo(
+                  new WritableStream({
+                    write(chunk) {
+                      console.log(chunk);
+                    },
+                  })
+                );
+
+                if (runProcess) {
+                  runProcess.kill();
+                }
+
+                let tempRunProcess = await webContainer.spawn("npm", ["start"]);
+
+                tempRunProcess.output.pipeTo(
+                  new WritableStream({
+                    write(chunk) {
+                      console.log(chunk);
+                    },
+                  })
+                );
+
+                setRunProcess(tempRunProcess);
+
+                webContainer.on("server-ready", (port, url) => {
+                  console.log(port, url);
+                  setIframeUrl(url);
+                });
+              }}
+              className={`p-2 px-4  bg-slate-600 text-white ${
+                openFiles.length > 0 ? "cursor-pointer" : "cursor-not-allowed"
+              }`}
+            >
+              run
+            </button>
+            <button
+              className={` bg-slate-300  justify-center font-semibold text-lg tree-element cursor-pointer p-2 px-4 flex items-center gap-2  w-full ${
+                openFiles.length === 0
+                  ? "cursor-not-allowed "
+                  : " cursor-pointer"
+              }`}
+            >
+              Remove
+              <i
+                onClick={() => {
+                  setOpenFiles([]);
+                  setFileTree({});
+                  setIframeUrl(null);
+                }}
+                className="ri-delete-bin-line"
+              ></i>
+            </button>
           </div>
         </div>
 
@@ -329,63 +411,6 @@ const Project = () => {
                   <p className="font-semibold text-lg">{file}</p>
                 </button>
               ))}
-            </div>
-
-            <div className="actions flex ">
-            <button className={` bg-slate-300 font-semibold text-lg tree-element cursor-pointer p-2 px-4 flex items-center gap-2  w-full ${openFiles.length === 0 ? "cursor-not-allowed " : " cursor-pointer"}`}>
-              Remove
-              <i
-                onClick={() => {
-                  setOpenFiles([])
-                  setFileTree({});
-                 
-                }}
-                className="ri-delete-bin-line"
-              ></i>
-            </button>
-              <button
-                onClick={async () => {
-                  await webContainer.mount(fileTree);
-
-                  const installProcess = await webContainer.spawn("npm", [
-                    "install",
-                  ]);
-
-                  installProcess.output.pipeTo(
-                    new WritableStream({
-                      write(chunk) {
-                        console.log(chunk);
-                      },
-                    })
-                  );
-
-                  if (runProcess) {
-                    runProcess.kill();
-                  }
-
-                  let tempRunProcess = await webContainer.spawn("npm", [
-                    "start",
-                  ]);
-
-                  tempRunProcess.output.pipeTo(
-                    new WritableStream({
-                      write(chunk) {
-                        console.log(chunk);
-                      },
-                    })
-                  );
-
-                  setRunProcess(tempRunProcess);
-
-                  webContainer.on("server-ready", (port, url) => {
-                    console.log(port, url);
-                    setIframeUrl(url);
-                  });
-                }}
-                className={`p-2 px-4 bg-slate-600 text-white ${openFiles.length>0?"cursor-pointer":"cursor-not-allowed"}`}
-              >
-                run
-              </button>
             </div>
           </div>
           <div className="bottom flex flex-grow max-w-full shrink overflow-auto">
@@ -428,8 +453,8 @@ const Project = () => {
         </div>
 
         {iframeUrl && webContainer && (
-          <div className="flex min-w-96 flex-col h-full">
-            <div className="address-bar">
+          <div className="flex min-w-96 flex-col bg-inner h-full ">
+            <div className="address-bar ">
               <input
                 type="text"
                 onChange={(e) => setIframeUrl(e.target.value)}
@@ -437,48 +462,53 @@ const Project = () => {
                 className="w-full p-2 px-4 bg-slate-200"
               />
             </div>
-            <iframe src={iframeUrl} className="w-full h-full"></iframe>
+            <iframe src={iframeUrl} className="  w-full h-full"></iframe>
           </div>
         )}
       </section>
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-4 rounded-md w-96 max-w-full relative">
+          <div className="bg-outer text-white p-4 rounded-md w-96 max-w-full relative">
             <header className="flex  justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold">Add Collaborator</h2>
+              <h2 className="text-xl font-mono  ">Add Collaborator</h2>
               <button onClick={() => setIsModalOpen(false)} className="p-2">
                 <i className="ri-close-fill"></i>
               </button>
             </header>
-            <div className="inputField  w-full flex flex-col min-h-32 mb-4">
-              <input
-                onChange={(e) => {
-                  console.log(e.target.value);
-                  setFilterUser(e.target.value);
-                  handleSearch(e.target.value);
-                }}
-                className="p-2 px-4 "
+            <div className="inputField  relative  text-black    font-mono outline-none  w-full flex flex-col min-h-32 mb-4">
+              {/* Input Field */}
+             <div className="flex  ">
+             <input
+                value={filterUser || ""}
+                onChange={(e) => setFilterUser(e.target.value)}
+                className="p-2   max-h-10  px-4 border border-gray-300 outline-none flex-grow rounded-sm"
                 type="text"
-                placeholder="Enter collaborator email"
+                placeholder="Search for users"
               />
+              <button  className={`text-lg flex items-center ${Array.from(selectedUserId).length>0?'cursor-pointer':'cursor-not-allowed'} justify-center min-w-10 text-white font-semibold bg-black`} onClick={addCollaborators}>
+              <i className="ri-add-large-line flex items-center  "></i>
+              </button>
+             </div>
 
-              <div className="bg-white border overflow-y-scroll border-gray-300 rounded-md mt-2 w-full">
-                {userArr != null &&
-                  userArr.map((user, index) => (
+              {/* Dropdown for User Suggestions */}
+              {filterUser && userArr.length > 0 && (
+                <div className="absolute top-1/3 bg-white  left-0 w-full shadow-md  z-10">
+                  {userArr.map((user) => (
                     <div
                       key={user._id}
-                      className={`p-2 hover:bg-gray-100 cursor-pointer 
-        ${selectedUserId.has(user._id) ? "bg-blue-200" : ""} 
-        ${selectedUserId.has(user._id) ? "opacity-75" : "opacity-100"}`}
-                      onClick={() => handleUserClick(user._id)}
+                      onClick={() => handleUserClick(user._id)} // Select user on click
+                      className={`p-2 px-4 cursor-pointer ${
+                        selectedUserId.has(user._id) ? "bg-slate-400" : ""
+                      }`}
                     >
                       {user.username}
                     </div>
                   ))}
-              </div>
+                </div>
+              )}
 
-              <button onClick={addCollaborators}>add</button>
+            
             </div>
           </div>
         </div>

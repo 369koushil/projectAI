@@ -14,22 +14,8 @@ const Home = () => {
 
   const handleProjectCreated = (newProject) => {
    
-    axios
-    .get(`${import.meta.env.VITE_API_URL}/projects/all`,
-     {
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem('token')}`
-    }
-     }
-    )
-    .then((res) => {
-      console.log(res.data);
-      setProject(res.data.projects);
-      console.log(user);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    setProject((prevProjects) => [newProject, ...prevProjects]);
+  
   };
 
 
@@ -87,7 +73,7 @@ const Home = () => {
           </div>
         </div>
       </header>
-      <div className="p-4 pt-12 gap-y-16 h-full projects grow bg-primary flex flex-wrap flex-col">
+      <div className="p-4 pt-12 gap-y-16 h-full projects grow bg-primary flex flex-col">
         <div>
           <button
             onClick={() => setIsModalOpen(true)}

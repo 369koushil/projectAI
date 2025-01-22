@@ -19,9 +19,10 @@ const ProjectCreateForm = (props) => {
             }
             }).then(res=>{
                 console.log(res.data)
+                props.onProjectCreated(res.data); 
             }).finally(err=>console.log(err))
             props.setIsModalOpen(false)
-            props.onProjectCreated(res.data.project); 
+            
         }
 
   return (

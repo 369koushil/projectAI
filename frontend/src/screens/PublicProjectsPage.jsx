@@ -112,6 +112,7 @@ const navigate=useNavigate();
                   })
                 }
                 title={obj.name}
+                collabs={obj.users.length}
                 description={obj.description}
               />
             ))}

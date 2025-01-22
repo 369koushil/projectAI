@@ -19,7 +19,9 @@ export default {
         profilecolor:"#0d1117",
         form:"#232c39",
         green:"#238636",
-        box:"#2d4754"
+        box:"#2d4754",
+        outer:"#2d4754",
+        inner:"#5b717c"
       }
     },
   },

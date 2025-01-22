@@ -10,6 +10,8 @@ import FileUpload from '../screens/FileUpload'
 import FileuploadImagekit from '../../upload/FileuploadImagekit'
 import ProjectDisplay from '../components/ProjectDisplay'
 import PublicProjectsPage from '../screens/PublicProjectsPage'
+import FeaturesUnderdev from '../screens/FeaturesUnderdev'
+import NotFound from '../screens/NotFound'
 
 const AppRoutes = () => {
     return (
@@ -18,12 +20,14 @@ const AppRoutes = () => {
             <Routes>
                 <Route path="/" element={<UserAuth><Home /></UserAuth>} />
                 <Route path="/login" element={<Login />} />
+                <Route path='*' element={<NotFound/>}/>
                 <Route path="/register" element={<Register />} />
                 <Route path='/profile' element={<UserProfile/>}/>
                 <Route path='/upload' element={<FileuploadImagekit/>}/>
                 <Route path="/project" element={<UserAuth><Project /></UserAuth>} />
                 <Route path='/box' element={<ProjectDisplay></ProjectDisplay>}/>
                 <Route path='/public-projects' element={<PublicProjectsPage/>}/>
+                <Route path='/developing' element={<FeaturesUnderdev/>}/>
             </Routes>
 
         </BrowserRouter>

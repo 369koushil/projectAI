@@ -37,10 +37,10 @@ const ProjectProfile = (props) => {
         </div>
 
         <div className='flex flex-row h-16 justify-start items-center gap-x-24'>
-        <div className='flex flex-col  text-white text-md'><i onClick={()=>navigate('/developing')} className="text-white flex justify-center cursor-pointer text-3xl ri-user-line"></i><p>Owner</p></div>
-        <div className='flex flex-col  text-white text-md'><i onClick={()=>navigate('/developing')} className="text-white flex justify-center cursor-pointer text-3xl ri-thumb-up-line"></i><p>Like</p></div>
-        <div className='flex flex-col  text-white text-md'><i onClick={()=>navigate('/developing')} className="text-white flex justify-center cursor-pointer text-3xl ri-star-line"></i><p>Follow</p></div>
-        <div className='flex flex-col text-white text-md'><i onClick={()=>navigate('/developing')} className="flex justify-center cursor-pointer text-3xl text-white  ri-group-line"></i><p>Join as Collab</p></div>
+        <div className='flex flex-col  text-white text-md'><i onClick={()=>navigate('/developing')} className="text-white flex justify-center cursor-pointer text-3xl ri-user-line"></i><p clas>Owner</p></div>
+        <div className='flex flex-col  text-white text-md'><i onClick={()=>navigate('/developing')} className="text-white flex justify-center cursor-pointer text-3xl ri-thumb-up-line"></i><p clas>Like</p></div>
+        <div className='flex flex-col  text-white text-md'><i onClick={()=>navigate('/developing')} className="text-white flex justify-center cursor-pointer text-3xl ri-star-line"></i><p clas>Follow</p></div>
+        <div className='flex flex-col text-white text-md'><div className='flex text-lg font-mono font-semibold  gap-x-2 items-center justify-center'><i onClick={()=>navigate('/developing')} className="flex font-normal justify-center cursor-pointer  text-3xl text-white  ri-group-line"></i><span className='flex  '>{props.collabs}</span></div><p>Join as Collab</p></div>
         <button onClick={()=>navigate('/developing')} className='w-44 h-10 rounded-lg text-white text-lg bg-green'>Explore</button>
         
         </div>
