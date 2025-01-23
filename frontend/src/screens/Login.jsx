@@ -32,12 +32,9 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-gray-900 to-black px-4">
+    <div className="min-h-screen font-mono flex items-center justify-center bg-gradient-to-br from-inner via-primary to-darkblue px-4">
       <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md transform transition duration-500 hover:scale-105">
-        <h2 className="text-3xl font-extrabold text-white mb-6 text-center">Welcome Back</h2>
-        <p className="text-gray-400 mb-6 text-center">
-          Login to your account to continue.
-        </p>
+        <h2 className="text-2xl font-extrabold text-white mb-6 text-center">Login to your account</h2>
         <form onSubmit={submitHandler} className="space-y-6">
           <div>
             <label className="block text-gray-400 mb-2" htmlFor="email">
@@ -47,7 +44,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               id="email"
-              className="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3  font-mono rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your email"
             />
           </div>
