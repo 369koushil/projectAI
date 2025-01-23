@@ -45,8 +45,8 @@ const navigate=useNavigate();
  
   return (
     <section className="bg-primary flex flex-col  h-screen relative">
-      <header className="text-black sticky top-0 z-50 flex bg-white items-center max-h-20">
-        <div className="flex flex-row items-center justify-around gap-x-28 relative w-full">
+      <header className="text-black sticky top-0 z-50 flex bg-white  items-center max-h-20">
+        <div className="flex flex-row items-center gap-x-96 relative w-full">
           <img className="h-20" src={photo} alt="logo" />
           <div className="relative w-full max-w-md">
             <div className="flex flex-row">
