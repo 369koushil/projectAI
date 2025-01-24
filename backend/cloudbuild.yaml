@@ -1,0 +1,29 @@
+steps:
+# Step 1: Build the Docker image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/projectai', '.']
+
+# Step 2: Push the Docker image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/projectai']
+
+# Step 3: Deploy the Docker image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args:
+    [
+      'gcloud',
+      'run',
+      'deploy',
+      'projectai',
+      '--image=gcr.io/$PROJECT_ID/projectai',
+      '--region=us-central1',
+      '--platform=managed',
+      '--allow-unauthenticated'
+    ]
+
+# Optional: Set substitutions (environment variables)
+substitutions:
+  _REGION: 'us-central1'
+  _IMAGE: 'gcr.io/$PROJECT_ID/projectai'
+
+timeout: '1200s'  # Timeout for the whole build (default: 10 minutes)
