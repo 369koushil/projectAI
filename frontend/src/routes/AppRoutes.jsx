@@ -12,13 +12,14 @@ import ProjectDisplay from '../components/ProjectDisplay'
 import PublicProjectsPage from '../screens/PublicProjectsPage'
 import FeaturesUnderdev from '../screens/FeaturesUnderdev'
 import NotFound from '../screens/NotFound'
+import MaintenancePage from '../screens/MaintenancePage'
 
 const AppRoutes = () => {
     return (
         <BrowserRouter>
-
             <Routes>
-                <Route path="/" element={<UserAuth><Home /></UserAuth>} />
+            <Route path="/" element={<MaintenancePage/>} />
+                {/* <Route path="/" element={<UserAuth><Home /></UserAuth>} />
                 <Route path="/login" element={<Login />} />
                 <Route path='*' element={<NotFound/>}/>
                 <Route path="/register" element={<Register />} />
@@ -27,7 +28,7 @@ const AppRoutes = () => {
                 <Route path="/project" element={<UserAuth><Project /></UserAuth>} />
                 <Route path='/box' element={<ProjectDisplay></ProjectDisplay>}/>
                 <Route path='/public-projects' element={<PublicProjectsPage/>}/>
-                <Route path='/developing' element={<FeaturesUnderdev/>}/>
+                <Route path='/developing' element={<FeaturesUnderdev/>}/> */}
             </Routes>
 
         </BrowserRouter>
