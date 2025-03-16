@@ -19,9 +19,9 @@ const AppRoutes = () => {
         <BrowserRouter>
             <Routes>
             <Route path="/" element={<MaintenancePage/>} />
+            <Route path='*' element={<NotFound/>}/>
                 {/* <Route path="/" element={<UserAuth><Home /></UserAuth>} />
                 <Route path="/login" element={<Login />} />
-                <Route path='*' element={<NotFound/>}/>
                 <Route path="/register" element={<Register />} />
                 <Route path='/profile' element={<UserProfile/>}/>
                 <Route path='/upload' element={<FileuploadImagekit/>}/>
