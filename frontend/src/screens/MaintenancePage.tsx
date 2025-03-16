@@ -7,7 +7,7 @@ export default function MaintenancePage() {
           currently updating the project. Stay tuned!
         </p>
         <a
-          href="https://github.com/369koushil"
+          href="https://github.com/369koushil/projectAI"
           target="_blank"
           rel="noopener noreferrer"
           className="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg text-white font-semibold transition"
